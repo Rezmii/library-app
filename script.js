@@ -61,8 +61,10 @@ function displayBooks(myLibrary) {
   libraryDiv.innerHTML = "";
 
   myLibrary.forEach((i) => {
-    let pElement = document.createElement("p");
+    let divElement = document.createElement("div");
+
     for (const [key, value] of Object.entries(i)) {
+      let pElement = document.createElement("p");
       let result = key.charAt(0).toUpperCase() + key.slice(1);
       let arrVal = document.createTextNode(`${result}: `);
 
@@ -73,8 +75,8 @@ function displayBooks(myLibrary) {
       let valueText = document.createTextNode(value);
       pElement.appendChild(valueText);
 
-      pElement.appendChild(document.createElement("br"));
-      libraryDiv.appendChild(pElement);
+      divElement.appendChild(pElement);
+      libraryDiv.appendChild(divElement);
     }
   });
 }

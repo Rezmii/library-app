@@ -8,13 +8,13 @@ body {
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto;
   margin-top: 15px;
+  gap: 10px;
 }
 
-.library-div p {
+.library-div div {
   border: 2px solid black;
-  margin: 10px 30px;
-  padding: 10px 0;
   border-radius: 10px;
+  font-size: 0.9em;
 }
 
 dialog {

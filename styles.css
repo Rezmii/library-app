@@ -1,3 +1,38 @@
 body {
   text-align: center;
+  font-size: 1.3em;
+}
+
+.library-div {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  margin-top: 15px;
+}
+
+.library-div p {
+  border: 2px solid black;
+  margin: 10px 30px;
+  padding: 10px 0;
+  border-radius: 10px;
+}
+
+dialog {
+  padding: 0;
+  width: 50%;
+  height: 60%;
+}
+
+.dialog-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dialog-div:first-of-type button {
+  margin-bottom: 20px;
+}
+dialog::backdrop {
+  background-color: lightgray;
+  opacity: 0.6;
 }

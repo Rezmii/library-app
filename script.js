@@ -7,8 +7,16 @@ const libraryDiv = document.querySelector(".library-div");
 
 const dialog = document.querySelector("dialog");
 const showButton = document.querySelector("dialog + button");
-const closeButton = document.querySelector("dialog button");
+const closeButton = document.querySelector(".close-button");
 const dialogAddButton = document.querySelector("dialog .add-button");
+
+const book = new Book(
+  "Harry Potter and the Sorcerer's Stone",
+  "J.K. Rowling",
+  223,
+  "Yes"
+);
+myLibrary.push(book);
 
 showButton.addEventListener("click", () => {
   dialog.showModal();
@@ -41,6 +49,7 @@ dialogAddButton.addEventListener("click", () => {
     );
     displayBooks(myLibrary);
   } else alert("gowno");
+  dialog.close();
 });
 
 function addBookToLibrary(title, author, pages, read) {
@@ -54,8 +63,16 @@ function displayBooks(myLibrary) {
   myLibrary.forEach((i) => {
     let pElement = document.createElement("p");
     for (const [key, value] of Object.entries(i)) {
-      let arrVal = document.createTextNode(`${key}: ${value}\n`);
-      pElement.appendChild(arrVal);
+      let result = key.charAt(0).toUpperCase() + key.slice(1);
+      let arrVal = document.createTextNode(`${result}: `);
+
+      let strongElement = document.createElement("strong");
+      strongElement.appendChild(arrVal);
+      pElement.appendChild(strongElement);
+
+      let valueText = document.createTextNode(value);
+      pElement.appendChild(valueText);
+
       pElement.appendChild(document.createElement("br"));
       libraryDiv.appendChild(pElement);
     }

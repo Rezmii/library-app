@@ -15,7 +15,19 @@ body {
   border: 2px solid black;
   border-radius: 10px;
   font-size: 0.9em;
+  position: relative;
+  padding-top: 10px;
 }
+
+.delete-button {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/*dialog*/
 
 dialog {
   padding: 0;

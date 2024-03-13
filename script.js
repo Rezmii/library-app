@@ -60,23 +60,61 @@ function addBookToLibrary(title, author, pages, read) {
 function displayBooks(myLibrary) {
   libraryDiv.innerHTML = "";
 
-  myLibrary.forEach((i) => {
+  myLibrary.forEach((i, index) => {
     let divElement = document.createElement("div");
 
+    let buttonElement = addDeleteButtonToDiv(index);
+    divElement.appendChild(buttonElement);
+
     for (const [key, value] of Object.entries(i)) {
-      let pElement = document.createElement("p");
-      let result = key.charAt(0).toUpperCase() + key.slice(1);
-      let arrVal = document.createTextNode(`${result}: `);
-
-      let strongElement = document.createElement("strong");
-      strongElement.appendChild(arrVal);
-      pElement.appendChild(strongElement);
-
-      let valueText = document.createTextNode(value);
-      pElement.appendChild(valueText);
-
+      let pElement = addParagraphToDiv(key, value);
       divElement.appendChild(pElement);
-      libraryDiv.appendChild(divElement);
+    }
+
+    libraryDiv.appendChild(divElement);
+  });
+
+  addDeleteButtonsListeners();
+}
+
+function addDeleteButtonToDiv(index) {
+  let buttonElement = document.createElement("button");
+  let buttonText = document.createTextNode("X");
+  buttonElement.appendChild(buttonText);
+  buttonElement.classList.add("delete-button");
+  buttonElement.setAttribute("data-id", index);
+
+  return buttonElement;
+}
+
+function addDeleteButtonsListeners() {
+  const deleteButtons = document.querySelectorAll(".delete-button");
+  deleteButtons.forEach((deleteButton) => {
+    deleteButton.addEventListener("click", () => {
+      deleteBook(deleteButton.dataset.id, myLibrary);
+    });
+  });
+}
+
+function addParagraphToDiv(key, value) {
+  let pElement = document.createElement("p");
+  let result = key.charAt(0).toUpperCase() + key.slice(1);
+  let arrVal = document.createTextNode(`${result}: `);
+
+  let strongElement = document.createElement("strong");
+  strongElement.appendChild(arrVal);
+  pElement.appendChild(strongElement);
+
+  let valueText = document.createTextNode(value);
+  pElement.appendChild(valueText);
+  return pElement;
+}
+
+function deleteBook(id, myLibrary) {
+  myLibrary.forEach((val, i) => {
+    if (id == i) {
+      delete myLibrary[i];
+      displayBooks(myLibrary);
     }
   });
 }

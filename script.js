@@ -10,13 +10,23 @@ const showButton = document.querySelector("dialog + button");
 const closeButton = document.querySelector(".close-button");
 const dialogAddButton = document.querySelector("dialog .add-button");
 
-const book = new Book(
+const book1 = new Book(
   "Harry Potter and the Sorcerer's Stone",
   "J.K. Rowling",
   223,
   "Yes"
 );
-myLibrary.push(book);
+const book2 = new Book("A Game of Thrones", "George R.R. Martin", 694, "No");
+const book3 = new Book("Salem's Lot", "Stephen King", 525, "Yes");
+myLibrary.push(book1);
+myLibrary.push(book2);
+myLibrary.push(book3);
+
+Book.prototype.changeStatus = function () {
+  if (this.read === "Yes") {
+    this.read = "No";
+  } else this.read = "Yes";
+};
 
 showButton.addEventListener("click", () => {
   dialog.showModal();
@@ -63,17 +73,23 @@ function displayBooks(myLibrary) {
   myLibrary.forEach((i, index) => {
     let divElement = document.createElement("div");
 
-    let buttonElement = addDeleteButtonToDiv(index);
-    divElement.appendChild(buttonElement);
+    let deleteButtonElement = addDeleteButtonToDiv(index);
+    divElement.appendChild(deleteButtonElement);
 
     for (const [key, value] of Object.entries(i)) {
       let pElement = addParagraphToDiv(key, value);
       divElement.appendChild(pElement);
     }
 
+    let read = i.read;
+    let toggleButtonElement = addToggleButtonToDiv(index, read);
+
+    divElement.appendChild(toggleButtonElement);
+
     libraryDiv.appendChild(divElement);
   });
 
+  addToggleButtonsListeners();
   addDeleteButtonsListeners();
 }
 
@@ -87,11 +103,32 @@ function addDeleteButtonToDiv(index) {
   return buttonElement;
 }
 
+function addToggleButtonToDiv(index, read) {
+  let buttonElement = document.createElement("button");
+  let buttonText = document.createTextNode(
+    read === "Yes" ? "Mark as Unread" : "Mark as Read"
+  );
+  buttonElement.appendChild(buttonText);
+  buttonElement.classList.add("toggle-button");
+  buttonElement.setAttribute("data-id", index);
+
+  return buttonElement;
+}
+
 function addDeleteButtonsListeners() {
   const deleteButtons = document.querySelectorAll(".delete-button");
   deleteButtons.forEach((deleteButton) => {
     deleteButton.addEventListener("click", () => {
       deleteBook(deleteButton.dataset.id, myLibrary);
+    });
+  });
+}
+
+function addToggleButtonsListeners() {
+  const toggleButtons = document.querySelectorAll(".toggle-button");
+  toggleButtons.forEach((toggleButton) => {
+    toggleButton.addEventListener("click", () => {
+      toggleRead(toggleButton.dataset.id, myLibrary);
     });
   });
 }
@@ -111,10 +148,19 @@ function addParagraphToDiv(key, value) {
 }
 
 function deleteBook(id, myLibrary) {
-  myLibrary.forEach((val, i) => {
+  myLibrary.forEach((_, i) => {
     if (id == i) {
       delete myLibrary[i];
       displayBooks(myLibrary);
     }
   });
+}
+
+function toggleRead(id, myLibrary) {
+  myLibrary.forEach((val, i) => {
+    if (id == i) {
+      val.changeStatus();
+    }
+  });
+  displayBooks(myLibrary);
 }

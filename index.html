@@ -27,11 +27,31 @@
           <input type="text" id="author" /> <br />
           <label for="pages">Number of pages</label>
           <input type="number" id="pages" /> <br />
-          <label for="read">Read</label>
-          <select name="read" id="read">
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+          <p>Reading status</p>
+          <div>
+            <input
+              type="radio"
+              id="statusChoice1"
+              name="read"
+              value="Read"
+              checked
+            />
+            <label for="statusChoice1">Read</label>
+            <input
+              type="radio"
+              id="statusChoice2"
+              name="read"
+              value="In Progress"
+            />
+            <label for="statusChoice2">In Progress</label>
+            <input
+              type="radio"
+              id="statusChoice2"
+              name="read"
+              value="Not Read"
+            />
+            <label for="statusChoice3">Not Started</label>
+          </div>
           <br />
           <button class="add-button">Confirm</button>
           <button class="close-button">Close</button>

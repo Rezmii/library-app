@@ -3,6 +3,7 @@ const titleInput = document.querySelector("#title");
 const authorInput = document.querySelector("#author");
 const pagesInput = document.querySelector("#pages");
 const readInput = document.querySelector("#read");
+const radioInputs = document.querySelectorAll('input[name="read"]');
 const libraryDiv = document.querySelector(".library-div");
 
 const dialog = document.querySelector("dialog");
@@ -14,18 +15,33 @@ const book1 = new Book(
   "Harry Potter and the Sorcerer's Stone",
   "J.K. Rowling",
   223,
-  "Yes"
+  "In Progress"
 );
-const book2 = new Book("A Game of Thrones", "George R.R. Martin", 694, "No");
-const book3 = new Book("Salem's Lot", "Stephen King", 525, "Yes");
+const book2 = new Book(
+  "A Game of Thrones",
+  "George R.R. Martin",
+  694,
+  "Not Started"
+);
+const book3 = new Book("Salem's Lot", "Stephen King", 525, "Read");
 myLibrary.push(book1);
 myLibrary.push(book2);
 myLibrary.push(book3);
 
 Book.prototype.changeStatus = function () {
-  if (this.read === "Yes") {
-    this.read = "No";
-  } else this.read = "Yes";
+  switch (this.read) {
+    case "Read":
+      this.read = "In Progress";
+      break;
+    case "In Progress":
+      this.read = "Not Started";
+      break;
+    case "Not Started":
+      this.read = "Read";
+      break;
+    default:
+      break;
+  }
 };
 
 showButton.addEventListener("click", () => {
@@ -46,6 +62,7 @@ function Book(title, author, pages, read) {
 }
 
 dialogAddButton.addEventListener("click", () => {
+  let radioInput = checkRadioInput();
   if (
     titleInput.value !== "" &&
     authorInput.value !== "" &&
@@ -55,12 +72,24 @@ dialogAddButton.addEventListener("click", () => {
       titleInput.value,
       authorInput.value,
       pagesInput.value,
-      readInput.value
+      radioInput
     );
     displayBooks(myLibrary);
   } else alert("gowno");
   dialog.close();
 });
+
+function checkRadioInput() {
+  let selectedValue = "";
+
+  radioInputs.forEach(function (radioInput) {
+    if (radioInput.checked) {
+      selectedValue = radioInput.value;
+    }
+  });
+
+  return selectedValue;
+}
 
 function addBookToLibrary(title, author, pages, read) {
   const newBook = new Book(title, author, pages, read);
@@ -105,10 +134,23 @@ function addDeleteButtonToDiv(index) {
 
 function addToggleButtonToDiv(index, read) {
   let buttonElement = document.createElement("button");
-  let buttonText = document.createTextNode(
-    read === "Yes" ? "Mark as Unread" : "Mark as Read"
-  );
-  buttonElement.appendChild(buttonText);
+  let buttonText;
+
+  switch (read) {
+    case "Read":
+      buttonText = "1";
+      break;
+    case "In Progress":
+      buttonText = "2";
+      break;
+    case "Not Started":
+      buttonText = "3";
+      break;
+    default:
+      break;
+  }
+
+  buttonElement.textContent = buttonText;
   buttonElement.classList.add("toggle-button");
   buttonElement.setAttribute("data-id", index);
 

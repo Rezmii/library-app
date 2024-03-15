@@ -11,6 +11,9 @@ const showButton = document.querySelector("dialog + button");
 const closeButton = document.querySelector(".close-button");
 const dialogAddButton = document.querySelector("dialog .add-button");
 
+let favoriteCount = 0;
+let progressStatus = [0, 0, 0];
+
 const book1 = new Book(
   "Harry Potter and the Sorcerer's Stone",
   "J.K. Rowling",
@@ -113,12 +116,16 @@ function displayBooks(myLibrary) {
     let read = i.read;
     let toggleButtonElement = addToggleButtonToDiv(index, read);
 
+    let favoriteButtonElement = addFavoriteButtonToDiv(index);
+    divElement.appendChild(favoriteButtonElement);
+
     divElement.appendChild(toggleButtonElement);
 
     libraryDiv.appendChild(divElement);
   });
 
   addToggleButtonsListeners();
+  addFavoriteButtonListener();
   addDeleteButtonsListeners();
 }
 
@@ -156,6 +163,16 @@ function addToggleButtonToDiv(index, read) {
   return buttonElement;
 }
 
+function addFavoriteButtonToDiv(index) {
+  let buttonElement = document.createElement("button");
+  let buttonText = document.createTextNode("fav");
+  buttonElement.appendChild(buttonText);
+  buttonElement.classList.add("favorite-button");
+  buttonElement.setAttribute("data-id", index);
+
+  return buttonElement;
+}
+
 function addDeleteButtonsListeners() {
   const deleteButtons = document.querySelectorAll(".delete-button");
   deleteButtons.forEach((deleteButton) => {
@@ -171,6 +188,13 @@ function addToggleButtonsListeners() {
     toggleButton.addEventListener("click", () => {
       toggleRead(toggleButton.dataset.id, myLibrary);
     });
+  });
+}
+
+function addFavoriteButtonListener() {
+  const favoriteButton = document.querySelector(".favorite-button");
+  favoriteButton.addEventListener("click", () => {
+    console.log("test");
   });
 }
 
@@ -205,3 +229,5 @@ function toggleRead(id, myLibrary) {
   });
   displayBooks(myLibrary);
 }
+
+function incrementFavoriteCount() {}

@@ -134,24 +134,23 @@ function addDeleteButtonToDiv(index) {
 
 function addToggleButtonToDiv(index, read) {
   let buttonElement = document.createElement("button");
-  let buttonText;
+  let buttonClass;
 
   switch (read) {
     case "Read":
-      buttonText = "1";
+      buttonClass = "read";
       break;
     case "In Progress":
-      buttonText = "2";
+      buttonClass = "in-progress";
       break;
     case "Not Started":
-      buttonText = "3";
+      buttonClass = "not-started";
       break;
     default:
       break;
   }
 
-  buttonElement.textContent = buttonText;
-  buttonElement.classList.add("toggle-button");
+  buttonElement.classList.add("toggle-button", buttonClass);
   buttonElement.setAttribute("data-id", index);
 
   return buttonElement;

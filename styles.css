@@ -75,6 +75,8 @@ p {
 
 .toggle-button {
   margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 20px;
 }
 
 /*dialog*/
@@ -97,4 +99,17 @@ dialog {
 dialog::backdrop {
   background-color: lightgray;
   opacity: 0.6;
+}
+
+/*status change*/
+.read {
+  background-color: green;
+}
+
+.in-progress {
+  background-color: yellow;
+}
+
+.not-started {
+  background-color: red;
 }

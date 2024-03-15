@@ -7,28 +7,39 @@
     <title>Library</title>
   </head>
   <body>
-    <h1>Library</h1>
-    <dialog>
-      <div class="dialog-div">
-        <p>Add new book:</p>
-        <label for="title">Title</label>
-        <input type="text" id="title" /> <br />
-        <label for="author">Author</label>
-        <input type="text" id="author" /> <br />
-        <label for="pages">Number of pages</label>
-        <input type="number" id="pages" /> <br />
-        <label for="read">Read</label>
-        <select name="read" id="read">
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-        <br />
-        <button class="add-button">Confirm</button>
-        <button class="close-button">Close</button>
+    <div class="sidebar-div">
+      <img src="book.png" alt="book" class="book-img" />
+      <div class="stats-div">
+        <p>Favorited - 0</p>
+        <p>Books Read - 0</p>
+        <p>In Progress - 0</p>
+        <p>Not Started - 0</p>
       </div>
-    </dialog>
-    <button>Add new Book</button>
-    <div class="library-div"></div>
+    </div>
+    <div class="library">
+      <h1>Library</h1>
+      <dialog>
+        <div class="dialog-div">
+          <p>Add new book:</p>
+          <label for="title">Title</label>
+          <input type="text" id="title" /> <br />
+          <label for="author">Author</label>
+          <input type="text" id="author" /> <br />
+          <label for="pages">Number of pages</label>
+          <input type="number" id="pages" /> <br />
+          <label for="read">Read</label>
+          <select name="read" id="read">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+          <br />
+          <button class="add-button">Confirm</button>
+          <button class="close-button">Close</button>
+        </div>
+      </dialog>
+      <button>Add new Book</button>
+      <div class="library-div"></div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>

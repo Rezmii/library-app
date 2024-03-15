@@ -1,6 +1,43 @@
 body {
   text-align: center;
   font-size: 1.3em;
+  display: flex;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+.sidebar-div {
+  width: auto;
+  background-color: lightgrey;
+  height: auto;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6em;
+}
+
+.sidebar-div img {
+  padding-top: 30px;
+}
+
+.stats-div {
+  font-size: 1.2em;
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+.book-img {
+  width: 2em;
+}
+
+.library {
+  padding: 0 10px;
+  width: auto;
 }
 
 .library-div {
@@ -21,6 +58,7 @@ body {
 
 .library-div div p {
   height: 30px;
+  padding: 10px;
 }
 
 .library-div div p:last-of-type {

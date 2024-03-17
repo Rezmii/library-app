@@ -163,7 +163,6 @@ function displayBooks(myLibrary) {
   addToggleButtonsListeners();
   addFavoriteButtonListeners();
   addDeleteButtonsListeners();
-  console.log(myLibrary);
 }
 
 function addDeleteButtonToDiv(index) {

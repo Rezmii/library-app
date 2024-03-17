@@ -12,7 +12,11 @@ const closeButton = document.querySelector(".close-button");
 const dialogAddButton = document.querySelector("dialog .add-button");
 
 let favoriteCount = 0;
-let progressStatus = [0, 0, 0];
+let progressStatus = {
+  Read: 1,
+  "In Progress": 1,
+  "Not Started": 1,
+};
 
 const book1 = new Book(
   "Harry Potter and the Sorcerer's Stone",
@@ -35,15 +39,33 @@ Book.prototype.changeStatus = function () {
   switch (this.read) {
     case "Read":
       this.read = "In Progress";
+      progressStatus["In Progress"]++;
+      if (progressStatus["Read"] > 0) progressStatus["Read"]--;
       break;
     case "In Progress":
       this.read = "Not Started";
+      progressStatus["Not Started"]++;
+      if (progressStatus["In Progress"] > 0) progressStatus["In Progress"]--;
       break;
     case "Not Started":
       this.read = "Read";
+      progressStatus["Read"]++;
+      if (progressStatus["Not Started"] > 0) progressStatus["Not Started"]--;
       break;
     default:
       break;
+  }
+};
+
+Book.prototype.changeFavorite = function () {
+  if (this.fav === false) {
+    this.fav = true;
+    favoriteCount++;
+  } else {
+    if (favoriteCount > 0) {
+      this.fav = false;
+      favoriteCount--;
+    }
   }
 };
 
@@ -62,6 +84,7 @@ function Book(title, author, pages, read) {
   this.author = author;
   this.pages = pages;
   this.read = read;
+  this.fav = false;
 }
 
 dialogAddButton.addEventListener("click", () => {
@@ -69,7 +92,8 @@ dialogAddButton.addEventListener("click", () => {
   if (
     titleInput.value !== "" &&
     authorInput.value !== "" &&
-    pagesInput.value !== ""
+    pagesInput.value !== "" &&
+    pagesInput.value >= 0
   ) {
     addBookToLibrary(
       titleInput.value,
@@ -78,8 +102,13 @@ dialogAddButton.addEventListener("click", () => {
       radioInput
     );
     displayBooks(myLibrary);
-  } else alert("gowno");
-  dialog.close();
+    dialog.close();
+  } else {
+    alert("Wrong input, try again");
+    titleInput.value = "";
+    authorInput.value = "";
+    pagesInput.value = "";
+  }
 });
 
 function checkRadioInput() {
@@ -94,9 +123,11 @@ function checkRadioInput() {
   return selectedValue;
 }
 
-function addBookToLibrary(title, author, pages, read) {
-  const newBook = new Book(title, author, pages, read);
+function addBookToLibrary(title, author, pages, read, fav = false) {
+  const newBook = new Book(title, author, pages, read, fav);
   myLibrary.push(newBook);
+  progressStatus[read]++;
+  changeReadCount();
 }
 
 function displayBooks(myLibrary) {
@@ -109,24 +140,30 @@ function displayBooks(myLibrary) {
     divElement.appendChild(deleteButtonElement);
 
     for (const [key, value] of Object.entries(i)) {
-      let pElement = addParagraphToDiv(key, value);
-      divElement.appendChild(pElement);
+      if (key !== "fav") {
+        let pElement = addParagraphToDiv(key, value);
+        divElement.appendChild(pElement);
+      }
     }
+    let buttonsDiv = document.createElement("div");
+    buttonsDiv.classList.add("buttons-div");
+    divElement.appendChild(buttonsDiv);
 
     let read = i.read;
     let toggleButtonElement = addToggleButtonToDiv(index, read);
+    let fav = i.fav;
+    let favoriteButtonElement = addFavoriteButtonToDiv(index, fav);
 
-    let favoriteButtonElement = addFavoriteButtonToDiv(index);
-    divElement.appendChild(favoriteButtonElement);
-
-    divElement.appendChild(toggleButtonElement);
+    buttonsDiv.appendChild(favoriteButtonElement);
+    buttonsDiv.appendChild(toggleButtonElement);
 
     libraryDiv.appendChild(divElement);
   });
 
   addToggleButtonsListeners();
-  addFavoriteButtonListener();
+  addFavoriteButtonListeners();
   addDeleteButtonsListeners();
+  console.log(myLibrary);
 }
 
 function addDeleteButtonToDiv(index) {
@@ -163,10 +200,11 @@ function addToggleButtonToDiv(index, read) {
   return buttonElement;
 }
 
-function addFavoriteButtonToDiv(index) {
+function addFavoriteButtonToDiv(index, fav) {
   let buttonElement = document.createElement("button");
-  let buttonText = document.createTextNode("fav");
-  buttonElement.appendChild(buttonText);
+  let buttonClass = fav === false ? "not-favorite" : "favorite";
+
+  buttonElement.classList.add("favorite-button", buttonClass);
   buttonElement.classList.add("favorite-button");
   buttonElement.setAttribute("data-id", index);
 
@@ -191,10 +229,12 @@ function addToggleButtonsListeners() {
   });
 }
 
-function addFavoriteButtonListener() {
-  const favoriteButton = document.querySelector(".favorite-button");
-  favoriteButton.addEventListener("click", () => {
-    console.log("test");
+function addFavoriteButtonListeners() {
+  const favoriteButtons = document.querySelectorAll(".favorite-button");
+  favoriteButtons.forEach((favoriteButton) => {
+    favoriteButton.addEventListener("click", () => {
+      changeFavoriteStatus(favoriteButton.dataset.id, myLibrary);
+    });
   });
 }
 
@@ -207,9 +247,29 @@ function addParagraphToDiv(key, value) {
   strongElement.appendChild(arrVal);
   pElement.appendChild(strongElement);
 
-  let valueText = document.createTextNode(value);
-  pElement.appendChild(valueText);
+  let spanElement = document.createElement("span");
+  spanElement.textContent = value;
+
+  if (key === "read") {
+    spanElement.classList.add(getColorClassForStatus(value));
+  }
+
+  pElement.appendChild(spanElement);
+
   return pElement;
+}
+
+function getColorClassForStatus(status) {
+  switch (status) {
+    case "Read":
+      return "read-text";
+    case "In Progress":
+      return "in-progress-text";
+    case "Not Started":
+      return "not-started-text";
+    default:
+      return "";
+  }
 }
 
 function deleteBook(id, myLibrary) {
@@ -227,7 +287,31 @@ function toggleRead(id, myLibrary) {
       val.changeStatus();
     }
   });
+  changeReadCount();
   displayBooks(myLibrary);
 }
 
-function incrementFavoriteCount() {}
+function changeFavoriteStatus(id, myLibrary) {
+  myLibrary.forEach((val, i) => {
+    if (id == i) {
+      val.changeFavorite();
+    }
+  });
+  changeFavoriteCount();
+  displayBooks(myLibrary);
+}
+
+function changeFavoriteCount() {
+  const pElement = document.querySelector(".favorite-p");
+  pElement.textContent = `Favorite: ${favoriteCount}`;
+}
+
+function changeReadCount() {
+  const pElements = document.querySelectorAll(".read-p");
+
+  for (const key in progressStatus) {
+    const index = Object.keys(progressStatus).indexOf(key);
+    const value = progressStatus[key];
+    pElements[index].textContent = `${key}: ${value}`;
+  }
+}

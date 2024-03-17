@@ -10,10 +10,10 @@
     <div class="sidebar-div">
       <img src="book.png" alt="book" class="book-img" />
       <div class="stats-div">
-        <p>Favorited - 0</p>
-        <p>Books Read - 0</p>
-        <p>In Progress - 0</p>
-        <p>Not Started - 0</p>
+        <p class="favorite-p">Favorite: 0</p>
+        <p class="read-p">Read - 1</p>
+        <p class="read-p">In Progress - 1</p>
+        <p class="read-p">Not Started - 1</p>
       </div>
     </div>
     <div class="library">
@@ -53,8 +53,10 @@
             <label for="statusChoice3">Not Started</label>
           </div>
           <br />
-          <button class="add-button">Confirm</button>
-          <button class="close-button">Close</button>
+          <div class="dialog-buttons-div">
+            <button class="add-button">Confirm</button>
+            <button class="close-button">Close</button>
+          </div>
         </div>
       </dialog>
       <button>Add new Book</button>

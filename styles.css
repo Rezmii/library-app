@@ -9,6 +9,18 @@ p {
   margin: 0;
 }
 
+button,
+input {
+  border: 2px solid black;
+  border-radius: 10px;
+  font-size: 0.8em;
+  background-color: white;
+}
+
+button {
+  cursor: pointer;
+}
+
 .sidebar-div {
   width: auto;
   background-color: lightgrey;
@@ -48,7 +60,7 @@ p {
   gap: 10px;
 }
 
-.library-div div {
+.library-div > div:not(.buttons-div) {
   border: 2px solid black;
   border-radius: 10px;
   font-size: 0.9em;
@@ -73,18 +85,30 @@ p {
   cursor: pointer;
 }
 
-.toggle-button {
-  margin-bottom: 10px;
+.toggle-button,
+.favorite-button {
   padding: 10px;
   border-radius: 20px;
+}
+
+.buttons-div {
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.toggle-button,
+.favorite-button {
 }
 
 /*dialog*/
 
 dialog {
-  padding: 0;
-  width: 50%;
-  height: 60%;
+  padding: 10px;
+  width: 25%;
 }
 
 .dialog-div {
@@ -101,15 +125,40 @@ dialog::backdrop {
   opacity: 0.6;
 }
 
+.dialog-buttons-div {
+  display: flex;
+  gap: 20px;
+}
+
 /*status change*/
 .read {
   background-color: green;
 }
 
 .in-progress {
-  background-color: yellow;
+  background-color: orange;
 }
 
 .not-started {
   background-color: red;
+}
+
+.read-text {
+  color: green;
+}
+
+.in-progress-text {
+  color: orange;
+}
+
+.not-started-text {
+  color: red;
+}
+
+.favorite {
+  background-color: red;
+}
+
+.not-favorite {
+  background-color: blue;
 }

@@ -18,6 +18,16 @@ let progressStatus = {
   "Not Started": 1,
 };
 
+class Book {
+  constructor(title, author, pages, read) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+    this.fav = false;
+  }
+}
+
 const book1 = new Book(
   "Harry Potter and the Sorcerer's Stone",
   "J.K. Rowling",
@@ -78,14 +88,6 @@ closeButton.addEventListener("click", () => {
 });
 
 displayBooks(myLibrary);
-
-function Book(title, author, pages, read) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
-  this.fav = false;
-}
 
 dialogAddButton.addEventListener("click", () => {
   let radioInput = checkRadioInput();
